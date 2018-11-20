@@ -1,0 +1,141 @@
+<PRPA_IN201306UV02 ITSVersion="XML_1.0" xmlns="hl7-org:v3">
+    <id root="e52ab3b1-e8ac-4997-a9e7-e40b270696a0"/>
+    <creationTime value="20181119100538"/>
+    <interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201306UV02"/>
+    <processingCode code="T"/>
+    <processingModeCode code="T"/>
+    <acceptAckCode code="NE"/>
+    <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+            <id root="2.16.840.1.113883.3.72.6.2"/>
+            <name>[SYSTEMCODE]</name>
+        </device>
+    </receiver>
+    <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+            <id root="2.16.840.1.113883.3.72.6.5.100.85"/>
+        </device>
+    </sender>
+    <acknowledgement>
+        <typeCode code="AA"/>
+        <targetMessage>
+            <id root="2.16.840.1.113883.4.714" extension="123456"/>
+        </targetMessage>
+    </acknowledgement>
+    <controlActProcess classCode="CACT" moodCode="EVN">
+        <code code="PRPA_TE201306UV02"/>
+        <subject typeCode="SUBJ" contextConductionInd="false">
+            <registrationEvent classCode="REG" moodCode="EVN">
+                <statusCode code="completed"/>
+                <subject1 typeCode="SBJ">
+                    <realmCode code="SBJ"/>
+                    <patient classCode="PAT">
+                        <id root="2.16.840.1.113883.3.4594.3" extension="185086693" assigningAuthorityName="CADSUS-BULK"/>
+                        <id root="2.16.840.1.113883.3.4594.2" extension="0001753000" assigningAuthorityName="CADSUS-UPDATE"/>
+                        <id root="2.16.840.1.113883.3.4594" extension="0001753000" assigningAuthorityName="RES-BRASIL"/>
+                        <statusCode code="active"/>
+                        <patientPerson classCode="PSN" determinerCode="INSTANCE">
+                            <name use="L">
+                                <given>SEVERINO FAUSTINO</given>
+                            </name>
+                            <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+                            <birthTime value="19380625000000"/>
+                            <addr use="H">
+                                <city>330455</city>
+                                <state>RJ</state>
+                                <postalCode>22763550</postalCode>
+                                <country>010</country>
+                                <houseNumber>64</houseNumber>
+                                <streetName>DA BIBLIA</streetName>
+                                <streetNameType>065</streetNameType>
+                                <additionalLocator>CIDADE DE DEUS</additionalLocator>
+                                <unitID>FDS CASA</unitID>
+                            </addr>
+                            <raceCode code="02"/>
+                            <asOtherIDs classCode="ROL">
+                                <id root="2.16.840.1.113883.13.236" extension="898002940850595"/>
+                                <id root="2.16.840.1.113883.13.236.1" extension="D"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.236"/>
+                                    <id root="2.16.840.1.113883.13.236.1"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs classCode="ROL">
+                                <id root="2.16.840.1.113883.13.243" extension="01350389"/>
+                                <id root="2.16.840.1.113883.13.245" extension="81"/>
+                                <id root="2.16.840.1.113883.4.707" extension="RJ"/>
+                                <id root="2.16.840.1.113883.13.243.1" extension="19890127000000.0-0200"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.243"/>
+                                    <id root="2.16.840.1.113883.13.245"/>
+                                    <id root="2.16.840.1.113883.4.707"/>
+                                    <id root="2.16.840.1.113883.13.243.1"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <personalRelationship classCode="PRS">
+                                <code code="PRN" codeSystem="2.16.840.1.113883.1.11.19563"/>
+                                <relationshipHolder1 classCode="PSN" determinerCode="INSTANCE">
+                                    <name xsi:type="PN" use="L" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                        <given>AMALIA COELHO DE MELO</given>
+                                    </name>
+                                </relationshipHolder1>
+                            </personalRelationship>
+                            <personalRelationship classCode="PRS">
+                                <code code="NPRN" codeSystem="2.16.840.1.113883.1.11.19563"/>
+                                <relationshipHolder1 classCode="PSN" determinerCode="INSTANCE">
+                                    <name xsi:type="PN" use="L" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                        <given>SEM INFORMAÇÃO</given>
+                                    </name>
+                                </relationshipHolder1>
+                            </personalRelationship>
+                            <birthPlace classCode="BIRTHPL">
+                                <addr>
+                                    <city>330455</city>
+                                    <country>010</country>
+                                </addr>
+                            </birthPlace>
+                        </patientPerson>
+                        <providerOrganization classCode="ORG" determinerCode="INSTANCE">
+                            <id root="2.16.840.1.113883.3.4594.3"/>
+                            <id root="2.16.840.1.113883.3.4594.2"/>
+                            <id root="2.16.840.1.113883.3.4594"/>
+                            <contactParty classCode="CON"/>
+                        </providerOrganization>
+                        <subjectOf1>
+                            <queryMatchObservation classCode="OBS" moodCode="EVN">
+                                <code code="IHE_PDQ"/>
+                                <value xsi:type="INT" value="100" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                            </queryMatchObservation>
+                        </subjectOf1>
+                    </patient>
+                </subject1>
+                <custodian typeCode="CST">
+                    <assignedEntity classCode="ASSIGNED">
+                        <id root="2.16.840.1.113883.3.4594.3"/>
+                    </assignedEntity>
+                </custodian>
+            </registrationEvent>
+        </subject>
+        <queryAck>
+            <queryId root="1.2.840.114350.1.13.28.1.18.5.999" extension="1840997084"/>
+            <queryResponseCode code="OK"/>
+            <resultTotalQuantity value="1"/>
+            <resultCurrentQuantity value="1"/>
+            <resultRemainingQuantity value="0"/>
+        </queryAck>
+        <queryByParameter>
+            <queryId root="1.2.840.114350.1.13.28.1.18.5.999" extension="1840997084"/>
+            <statusCode code="new"/>
+            <responseModalityCode code="R"/>
+            <responsePriorityCode code="I"/>
+            <parameterList>
+                <livingSubjectName>
+                    <value use="L">
+                        <given>SEVERINO FAUSTINO</given>
+                    </value>
+                    <semanticsText>LivingSubject.Given</semanticsText>
+                </livingSubjectName>
+            </parameterList>
+        </queryByParameter>
+    </controlActProcess>
+</PRPA_IN201306UV02>

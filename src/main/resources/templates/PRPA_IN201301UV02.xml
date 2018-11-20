@@ -1,0 +1,224 @@
+<PRPA_IN201301UV02 ITSVersion="XML_1.0" xmlns="hl7-org:v3">
+    <id extension="6e88df42-70ac-4db6-a4ba-449c7fbf2a4e" root="2.16.840.1.113883.3.72.6.1"/>
+    <creationTime th:value="${#temporals.format(requestTime, 'yyyyMMddHHmmss')}"/>
+    <interactionId extension="PRPA_IN201301UV02" root="2.16.840.1.113883.1.6"/>
+    <processingCode code="P"/>
+    <processingModeCode code="T"/>
+    <acceptAckCode code="AL"/>
+    <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+            <id root="2.16.840.1.113883.3.72.6.5.100.85"/>
+            <asAgent classCode="AGNT">
+                <representedOrganization classCode="ORG" determinerCode="INSTANCE">
+                    <id root="2.16.840.1.113883.3.72.6.1"/>
+                </representedOrganization>
+            </asAgent>
+        </device>
+    </receiver>
+    <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+            <id root="2.16.840.1.113883.3.72.6.2"/>
+            <asAgent classCode="AGNT">
+                <representedOrganization classCode="ORG" determinerCode="INSTANCE">
+                    <id root="2.16.840.1.113883.3.72.6.1"/>
+                </representedOrganization>
+            </asAgent>
+        </device>
+    </sender>
+    <controlActProcess classCode="CACT" moodCode="EVN">
+        <code code="PRPA_TE201301UV02" codeSystem="2.16.840.1.113883.1.6"/>
+        <subject typeCode="SUBJ">
+            <registrationEvent classCode="REG" moodCode="EVN">
+                <id nullFlavor="NA"/>
+                <statusCode code="active"/>
+                <subject1 typeCode="SBJ">
+                    <patient classCode="PAT">
+                        <id th:each="identificadorLocal : ${identificadoresLocais}"
+                            th:attr="assigningAuthorityName=${identificadorLocal.nomeSistema},extension=${identificadorLocal.idLocal},root=${identificadorLocal.oidSistema}"/>
+                        <statusCode code="active"/>
+                        <confidentialityCode codeSystem="2.16.840.1.113883.5.25" th:attr="code=${tipoConfidencialidade.value}"/>
+                        <veryImportantPersonCode th:if="${vip}" code="VIP" codeSystem="2.16.840.1.113883.5.1075"/>
+                        <patientPerson classCode="PSN" determinerCode="INSTANCE">
+                            <name th:if="${nome != null}" use="L">
+                                <given th:utext="${nome}">Nome</given>
+                            </name>
+                            <name th:if="${nomeSocial != null}" use="ASGN">
+                                <given th:utext="${nomeSocial}">Nome social</given>
+                            </name>
+                            <telecom th:each="contato : ${contatos}" th:attr="use=${contato.tipo.value}" th:value="${contato.value}"/>
+                            <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" th:attr="code=${sexo.value}"/>
+                            <birthTime th:if="${dataNascimento != null}" th:value="${#temporals.format(dataNascimento, 'yyyyMMdd')}"/>
+                            <deceasedInd th:value="${vivo} ? 'false' : 'true'"/>
+                            <deceasedTime th:if="${dataObito != null}" th:value="${#temporals.format(dataObito, 'yyyyMMdd')}"/>
+                            <addr use="H" th:each="endereco : ${enderecos}">
+                                <streetNameType th:utext="${endereco.tipoLogradouro.value}"/>
+                                <streetName th:utext="${endereco.logradouro}">[Nome do logradouro</streetName>
+                                <houseNumber th:utext="${endereco.numero}">[Número do logradouro, caso não exista preencher com S/N]</houseNumber>
+                                <unitID th:if="${endereco.complemento != null}" th:utext="${endereco.complemento}">[Complemento]</unitID>
+                                <additionalLocator th:utext="${endereco.bairro}">[Bairro]</additionalLocator>
+                                <city th:utext="${endereco.codigoMunicipio}">[Município]</city>
+                                <state th:utext="${endereco.uf.value}">[UF]</state>
+                                <postalCode th:if="${endereco.cep != null}" th:utext="${endereco.cep}">[CEP]</postalCode>
+                                <country th:utext="${endereco.pais.value}">[Código do país]</country>
+                            </addr>
+                            <raceCode th:attr="code=${racaCor.value}"/>
+                            <ethnicGroupCode th:if="${etnia != null}" th:attr="code=${etnia.value}"/>
+                            <asCitizen th:each="passaporte : ${passaportes}" classCode="CIT">
+                                <id th:attr="extension=${passaporte.numero}" root="2.16.840.1.113883.4.330"/>
+                                <effectiveTime operator="E" th:value="${#temporals.format(passaporte.dataEmissao, 'yyyyMMdd')}" value="20010101">
+                                    <high th:value="${#temporals.format(passaporte.dataValidade, 'yyyyMMdd')}"/>
+                                </effectiveTime>
+                                <politicalNation classCode="NAT" determinerCode="INSTANCE">
+                                    <code th:attr="code=${passaporte.paisOrigem.value}"/>
+                                </politicalNation>
+                            </asCitizen>
+                            <asOtherIDs classCode="ROL" th:each="cns : ${cnss}">
+                                <id th:attr="extension=${cns.numero}" root="2.16.840.1.113883.13.236"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.236"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs classCode="ROL" th:if="${cpf != null}">
+                                <id th:attr="extension=${cpf}" root="2.16.840.1.113883.13.237"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.237"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:if="${numeroNisPisPasep != null}" classCode="ROL">
+                                <id th:attr="extension=${numeroNisPisPasep}" root="2.16.840.1.113883.13.240"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.240"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:if="${numeroDnv != null}" classCode="ROL">
+                                <id th:attr="extension=${numeroDnv}" root="2.16.840.1.113883.13.242"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.242"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:if="${numeroRic != null}" classCode="ROL">
+                                <id th:attr="extension=${numeroRic}" root="2.16.840.1.113883.3.3024"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.3.3024"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:if="${cnh != null}" classCode="ROL">
+                                <id th:attr="extension=${cnh.numero}" root="2.16.840.1.113883.13.238"/>
+                                <id th:attr="extension=${cnh.uf.value}" root="2.16.840.1.113883.4.707"/>
+                                <id th:attr="extension=${#temporals.format(cnh.dataEmissao, 'yyyyMMdd')}" root="2.16.840.1.113883.13.238.1"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.238"/>
+                                    <id root="2.16.840.1.113883.13.238.1"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:if="${tituloEleitor != null}" classCode="ROL">
+                                <id th:attr="extension=${tituloEleitor.numero}" root="2.16.840.1.113883.13.239"/>
+                                <id th:attr="extension=${tituloEleitor.zona}" root="2.16.840.1.113883.13.239.1"/>
+                                <id th:attr="extension=${tituloEleitor.secao}" root="2.16.840.1.113883.13.239.2"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.239"/>
+                                    <id root="2.16.840.1.113883.13.239.1"/>
+                                    <id root="2.16.840.1.113883.13.239.2"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:if="${rg != null}" classCode="ROL">
+                                <id th:attr="extension=${rg.numero}" root="2.16.840.1.113883.13.243"/>
+                                <id th:attr="extension=${#temporals.format(rg.dataEmissao, 'yyyyMMdd')}" root="2.16.840.1.113883.13.243.1"/>
+                                <id th:attr="extension=${rg.uf.value}" root="2.16.840.1.113883.4.707"/>
+                                <id th:attr="extension=${rg.orgaoEmissor}" root="2.16.840.1.113883.13.245"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.243"/>
+                                    <id root="2.16.840.1.113883.13.243.1"/>
+                                    <id root="2.16.840.1.113883.4.707"/>
+                                    <id root="2.16.840.1.113883.13.245"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:if="${ctps != null}" classCode="ROL">
+                                <id th:attr="extension=${ctps.numero}" root="2.16.840.1.113883.13.244"/>
+                                <id th:attr="extension=${ctps.serie}" root="2.16.840.1.113883.13.244.1"/>
+                                <id th:attr="extension=${#temporals.format(ctps.dataEmissao, 'yyyyMMdd')}" root="2.16.840.1.113883.13.244.2"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id root="2.16.840.1.113883.13.244"/>
+                                    <id root="2.16.840.1.113883.13.244.1"/>
+                                    <id root="2.16.840.1.113883.13.244.2"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:each="certidao : ${certidoes}" th:if="${certidao instanceof br.ufsc.bridge.mpiclient.model.CertidaoAntiga}" classCode="ROL">
+                                <id extension="null" th:attr="root=${certidao.tipo.root}"/>
+                                <id th:attr="extension=${certidao.cartorio}" root="2.16.840.1.113883.4.706.1"/>
+                                <id th:attr="extension=${certidao.livro}" root="2.16.840.1.113883.4.706.2"/>
+                                <id th:attr="extension=${certidao.folha}" root="2.16.840.1.113883.4.706.3"/>
+                                <id th:attr="extension=${certidao.termo}" root="2.16.840.1.113883.4.706.4"/>
+                                <id th:attr="extension=${#temporals.format(certidao.dataEmissao, 'yyyyMMdd')}" root="2.16.840.1.113883.4.706.5"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id th:attr="root=${certidao.tipo.root}"/>
+                                    <id root="2.16.840.1.113883.4.706.1"/>
+                                    <id root="2.16.840.1.113883.4.706.2"/>
+                                    <id root="2.16.840.1.113883.4.706.3"/>
+                                    <id root="2.16.840.1.113883.4.706.4"/>
+                                    <id root="2.16.840.1.113883.4.706.5"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs th:each="certidao : ${certidoes}" th:if="${certidao instanceof br.ufsc.bridge.mpiclient.model.CertidaoNova}" classCode="ROL">
+                                <id extension="null" th:attr="root=${certidao.tipo.root}"/>
+                                <id th:attr="extension=${certidao.matricula}" root="2.16.840.1.113883.4.706"/>
+                                <id th:attr="extension=${#temporals.format(certidao.dataEmissao, 'yyyyMMdd')}" root="2.16.840.1.113883.4.706.5"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id th:attr="root=${certidao.tipo.root}"/>
+                                    <id root="2.16.840.1.113883.4.706"/>
+                                    <id root="2.16.840.1.113883.4.706.5"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <asOtherIDs classCode="ROL" th:if="${!nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Brasileiro}">
+                                <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.numeroPortaria != null}"
+                                    th:attr="extension=${nacionalidade.numeroPortaria}" root="2.16.840.1.113883.4.713"/>
+                                <id th:attr="extension=${#temporals.format(nacionalidade.dataEntradaBrasil, 'yyyyMMdd')}" root="2.16.840.1.113883.4.713.1"/>
+                                <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.dataNaturalizacao != null}"
+                                    th:attr="extension=${#temporals.format(nacionalidade.dataNaturalizacao, 'yyyyMMdd')}" root="2.16.840.1.113883.4.713.2"/>
+                                <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.numeroPortaria != null}"
+                                        root="2.16.840.1.113883.4.713"/>
+                                    <id root="2.16.840.1.113883.4.713.1"/>
+                                    <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.dataNaturalizacao != null}"
+                                        root="2.16.840.1.113883.4.713.2"/>
+                                </scopingOrganization>
+                            </asOtherIDs>
+                            <personalRelationship th:if="${nomePai != null}" classCode="PRS">
+                                <code code="NPRN" codeSystem="2.16.840.1.113883.1.11.19563" displayName="Nome do Pai"/>
+                                <relationshipHolder1 classCode="PSN" determinerCode="INSTANCE">
+                                    <name use="L">
+                                        <given th:utext="${nomePai}">Nome do pai</given>
+                                    </name>
+                                </relationshipHolder1>
+                            </personalRelationship>
+                            <personalRelationship th:if="${nomeMae != null}" classCode="PRS">
+                                <code code="PRN" codeSystem="2.16.840.1.113883.1.11.19563" displayName="Nome da Mae"/>
+                                <relationshipHolder1 classCode="PSN" determinerCode="INSTANCE">
+                                    <name use="L">
+                                        <given th:utext="${nomeMae}">Nome da mãe</given>
+                                    </name>
+                                </relationshipHolder1>
+                            </personalRelationship>
+                            <birthPlace classCode="BIRTHPL" determinerCode="INSTANCE">
+                                <addr>
+                                    <city th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Brasileiro && nacionalidade.codigoMunicipioNascimento != null}"
+                                          th:utext="${nacionalidade.codigoMunicipioNascimento}">[Código do município]
+                                    </city>
+                                    <country th:utext="${nacionalidade.paisNascimento.value}">[Código do país]</country>
+                                </addr>
+                            </birthPlace>
+                            <languageCommunication>
+                                <languageCode code="pt" codeSystem="2.16.840.1.113883.6.100"/>
+                                <preferenceInd value="true"/>
+                            </languageCommunication>
+                        </patientPerson>
+                        <providerOrganization classCode="ORG" determinerCode="INSTANCE">
+                            <id root="2.16.840.1.113883.13.236"/>
+                            <contactParty classCode="CON"/>
+                        </providerOrganization>
+                    </patient>
+                </subject1>
+            </registrationEvent>
+        </subject>
+    </controlActProcess>
+</PRPA_IN201301UV02>

@@ -1,0 +1,70 @@
+<PRPA_IN201305UV02 xsi:schemaLocation="hl7-org:v3" ITSVersion="XML_1.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="hl7-org:v3">
+    <id root="2.16.840.1.113883.4.714" extension="123456"/>
+    <creationTime th:value="${#temporals.format(requestTime, 'yyyyMMddHHmmss')}"/>
+    <interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201305UV02"/>
+    <processingCode code="T"/>
+    <processingModeCode code="T"/>
+    <acceptAckCode code="AL"/>
+    <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+            <id root="2.16.840.1.113883.3.72.6.5.100.85"/>
+        </device>
+    </receiver>
+    <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+            <id root="2.16.840.1.113883.3.72.6.2"/>
+            <name>[SYSTEMCODE]</name>
+        </device>
+    </sender>
+    <controlActProcess classCode="CACT" moodCode="EVN">
+        <code code="PRPA_TE201305UV02" codeSystem="2.16.840.1.113883.1.6"/>
+        <queryByParameter>
+            <queryId root="1.2.840.114350.1.13.28.1.18.5.999" extension="1840997084"/>
+            <statusCode code="new"/>
+            <responseModalityCode code="R"/>
+            <responsePriorityCode code="I"/>
+            <parameterList>
+                <livingSubjectAdministrativeGender th:if="${sexo != null}">
+                    <value th:attr="code=${sexo.value}" codeSystem="2.16.840.1.113883.5.1"/>
+                    <semanticsText>LivingSubject.administrativeGender</semanticsText>
+                </livingSubjectAdministrativeGender>
+                <livingSubjectBirthTime th:if="${dataNascimento != null}">
+                    <value th:value="${#temporals.format(dataNascimento, 'yyyyMMdd')}"/>
+                    <semanticsText>LivingSubject.birthTime</semanticsText>
+                </livingSubjectBirthTime>
+                <livingSubjectId th:if="${cpf != null}">
+                    <value root="2.16.840.1.113883.13.237" th:attr="extension=${cpf}"/>
+                    <semanticsText>LivingSubject.id</semanticsText>
+                </livingSubjectId>
+                <livingSubjectId th:if="${cns != null}">
+                    <value root="2.16.840.1.113883.13.236" th:attr="extension=${cns}"/>
+                    <semanticsText>LivingSubject.id</semanticsText>
+                </livingSubjectId>
+                <livingSubjectId th:if="${numeroNisPisPasep != null}">
+                    <value root="2.16.840.1.113883.13.240" th:attr="extension=${numeroNisPisPasep}"/>
+                    <semanticsText>LivingSubject.id</semanticsText>
+                </livingSubjectId>
+                <livingSubjectId th:if="${idLocal != null}">
+                    <value th:attr="extension=${idLocal},root=${oidSistema}"/>
+                    <semanticsText>LivingSubject.id</semanticsText>
+                </livingSubjectId>
+                <livingSubjectName th:if="${nome != null}">
+                    <value use="L">
+                        <given th:utext="${nome}">Nome</given>
+                    </value>
+                    <semanticsText>LivingSubject.Given</semanticsText>
+                </livingSubjectName>
+                <mothersMaidenName th:if="${nomeMae != null}">
+                    <value use="L" th:utext="${nomeMae}">Nome da mãe</value>
+                    <semanticsText>mothersMaidenName</semanticsText>
+                </mothersMaidenName>
+                <patientAddress th:if="${codigoMunicipioNascimento != null}">
+                    <addr>
+                        <city th:utext="${codigoMunicipioNascimento}">Município nascimento</city>
+                    </addr>
+                </patientAddress>
+            </parameterList>
+        </queryByParameter>
+    </controlActProcess>
+</PRPA_IN201305UV02>
