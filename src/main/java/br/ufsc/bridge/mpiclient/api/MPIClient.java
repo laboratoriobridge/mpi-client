@@ -1,7 +1,6 @@
 package br.ufsc.bridge.mpiclient.api;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,16 +16,15 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.Charsets;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 import br.ufsc.bridge.mpiclient.exceptions.MPIException;
 import br.ufsc.bridge.mpiclient.exceptions.MPIPixException;
 import br.ufsc.bridge.mpiclient.exceptions.MPIRuntimeException;
 import br.ufsc.bridge.mpiclient.exceptions.MPISoapException;
-import br.ufsc.bridge.mpiclient.messages.MCCI_IN000002UV01;
-import br.ufsc.bridge.mpiclient.messages.PRPA_IN201301UV02;
-import br.ufsc.bridge.mpiclient.messages.PRPA_IN201305UV02;
-import br.ufsc.bridge.mpiclient.messages.PRPA_IN201306UV02;
+import br.ufsc.bridge.mpiclient.messages.PDQRequestMessage;
+import br.ufsc.bridge.mpiclient.messages.PDQResponseMessage;
+import br.ufsc.bridge.mpiclient.messages.PIXRequestMessage;
+import br.ufsc.bridge.mpiclient.messages.PIXResponseMessage;
 import br.ufsc.bridge.mpiclient.model.Cidadao;
 import br.ufsc.bridge.soap.http.SoapCredential;
 import br.ufsc.bridge.soap.http.SoapHttpRequest;
@@ -57,26 +55,18 @@ public class MPIClient {
 	}
 
 	public void inserir(Cidadao cidadao) throws MPIException {
-		try {
-			String messageBody = new PRPA_IN201301UV02().create(cidadao, LocalDateTime.now());
-			String documentToString = this.sendSoap(this.options.getPixUrl(), "urn:hl7-org:v3:PRPA_IN201301UV02", messageBody, "MCCI_IN000002UV01");
-			PIXResponse response = new MCCI_IN000002UV01().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
-			if (response.getErrorMessage() != null) {
-				throw new MPIPixException(response.getErrorMessage());
-			}
-		} catch (SAXException | IOException e) {
-			throw new MPISoapException(e);
+		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
+		String documentToString = this.sendSoap(this.options.getPixUrl(), "urn:hl7-org:v3:PIXRequestMessage", messageBody, "PIXResponseMessage");
+		PIXResponse response = new PIXResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
+		if (response.getErrorMessage() != null) {
+			throw new MPIPixException(response.getErrorMessage());
 		}
 	}
 
 	public List<Cidadao> consultar(PDQParameters parameters) throws MPIException {
-		try {
-			String messageBody = new PRPA_IN201305UV02().create(parameters, LocalDateTime.now());
-			String documentToString = this.sendSoap(this.options.getPdqUrl(), "urn:hl7-org:v3:PRPA_IN201305UV02", messageBody, "PRPA_IN201306UV02");
-			return new PRPA_IN201306UV02().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
-		} catch (SAXException | IOException e) {
-			throw new MPISoapException(e);
-		}
+		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
+		String documentToString = this.sendSoap(this.options.getPdqUrl(), "urn:hl7-org:v3:PDQRequestMessage", messageBody, "PDQResponseMessage");
+		return new PDQResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 	}
 
 	private String sendSoap(String url, String action, String messageBody, String bodyContentTag)

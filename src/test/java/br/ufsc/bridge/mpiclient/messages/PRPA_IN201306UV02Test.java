@@ -3,14 +3,13 @@ package br.ufsc.bridge.mpiclient.messages;
 import static br.ufsc.bridge.mpiclient.model.MCidadao.meta;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
+import br.ufsc.bridge.mpiclient.exceptions.MPIXmlParseException;
 import br.ufsc.bridge.mpiclient.model.CNS;
 import br.ufsc.bridge.mpiclient.model.Cidadao;
 import br.ufsc.bridge.mpiclient.model.IdentificadorLocal;
@@ -28,9 +27,9 @@ import br.ufsc.bridge.mpiclient.model.dominio.UF;
 public class PRPA_IN201306UV02Test {
 
 	@Test
-	public void severinoFaustino() throws IOException, SAXException {
+	public void severinoFaustino() throws MPIXmlParseException {
 		InputStream stream = this.getClass().getResourceAsStream("/responses/SeverinoFaustino.xml");
-		List<Cidadao> read = new PRPA_IN201306UV02().read(stream);
+		List<Cidadao> read = new PDQResponseMessage().read(stream);
 
 		assertThat(read).hasSize(1);
 

@@ -8,14 +8,14 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import br.ufsc.bridge.mpiclient.api.PIXResponse;
 
-public class MCCI_IN000002UV01Handler extends DefaultHandler {
+public class PIXResponseMessageHandler extends DefaultHandler {
 
 	@Getter
 	private PIXResponse pixResponse = new PIXResponse();
 	private final AcknowledgementDetailHandler detailHandler;
 	private XMLReader reader;
 
-	public MCCI_IN000002UV01Handler(XMLReader reader) {
+	public PIXResponseMessageHandler(XMLReader reader) {
 		this.reader = reader;
 		this.detailHandler = new AcknowledgementDetailHandler();
 	}

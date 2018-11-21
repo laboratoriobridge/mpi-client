@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import br.ufsc.bridge.mpiclient.api.PDQParameters;
-import br.ufsc.bridge.mpiclient.exceptions.MPIValidationException;
 import br.ufsc.bridge.mpiclient.thymeleaf.TemplateSerializer;
 
-public class PRPA_IN201305UV02 {
+/**
+ * PRPA_IN201305UV02
+ */
+public class PDQRequestMessage {
 
-	public String create(PDQParameters parameters, LocalDateTime requestTime) throws MPIValidationException {
+	public String create(PDQParameters parameters, LocalDateTime requestTime) {
 		HashMap<String, Object> variables = new HashMap<>();
 		variables.put("requestTime", requestTime);
 		variables.put("cns", parameters.getCns());
