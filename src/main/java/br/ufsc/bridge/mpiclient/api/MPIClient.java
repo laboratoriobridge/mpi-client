@@ -15,11 +15,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.Charsets;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import br.ufsc.bridge.mpiclient.exceptions.MPIException;
 import br.ufsc.bridge.mpiclient.exceptions.MPIPixException;
+import br.ufsc.bridge.mpiclient.exceptions.MPIRuntimeException;
 import br.ufsc.bridge.mpiclient.exceptions.MPISoapException;
 import br.ufsc.bridge.mpiclient.messages.MCCI_IN000002UV01;
 import br.ufsc.bridge.mpiclient.messages.PRPA_IN201301UV02;
@@ -44,7 +46,7 @@ public class MPIClient {
 				transformerPool.add(factory.newTransformer());
 			}
 		} catch (TransformerConfigurationException e) {
-			throw new RuntimeException("Erro ao inicializar o pool de Transformer.", e);
+			throw new MPIRuntimeException("Erro ao inicializar o pool de Transformer.", e);
 		}
 	}
 
@@ -58,7 +60,7 @@ public class MPIClient {
 		try {
 			String messageBody = new PRPA_IN201301UV02().create(cidadao, LocalDateTime.now());
 			String documentToString = this.sendSoap(this.options.getPixUrl(), "urn:hl7-org:v3:PRPA_IN201301UV02", messageBody, "MCCI_IN000002UV01");
-			PIXResponse response = new MCCI_IN000002UV01().read(new ByteArrayInputStream(documentToString.getBytes()));
+			PIXResponse response = new MCCI_IN000002UV01().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 			if (response.getErrorMessage() != null) {
 				throw new MPIPixException(response.getErrorMessage());
 			}
@@ -71,7 +73,7 @@ public class MPIClient {
 		try {
 			String messageBody = new PRPA_IN201305UV02().create(parameters, LocalDateTime.now());
 			String documentToString = this.sendSoap(this.options.getPdqUrl(), "urn:hl7-org:v3:PRPA_IN201305UV02", messageBody, "PRPA_IN201306UV02");
-			return new PRPA_IN201306UV02().read(new ByteArrayInputStream(documentToString.getBytes()));
+			return new PRPA_IN201306UV02().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 		} catch (SAXException | IOException e) {
 			throw new MPISoapException(e);
 		}
@@ -107,10 +109,9 @@ public class MPIClient {
 		}
 	}
 
-	private String documentToString(Node doc) {
+	private String documentToString(Node doc) throws MPISoapException {
 		Transformer transformer = null;
-		try {
-			StringWriter sw = new StringWriter();
+		try (StringWriter sw = new StringWriter()) {
 			transformer = transformerPool.take();
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
@@ -120,7 +121,7 @@ public class MPIClient {
 			transformer.transform(new DOMSource(doc), new StreamResult(sw));
 			return sw.toString().replace(" standalone=\"no\"", "");
 		} catch (Exception ex) {
-			throw new RuntimeException("Error converting to String", ex);
+			throw new MPISoapException("Error converting to String", ex);
 		} finally {
 			if (transformer != null) {
 				transformerPool.add(transformer);
