@@ -26,10 +26,10 @@ import br.ufsc.bridge.mpiclient.messages.PRPA_IN201301UV02;
 import br.ufsc.bridge.mpiclient.messages.PRPA_IN201305UV02;
 import br.ufsc.bridge.mpiclient.messages.PRPA_IN201306UV02;
 import br.ufsc.bridge.mpiclient.model.Cidadao;
-import br.ufsc.bridge.mpiclient.soap.StringMessageBuilder;
 import br.ufsc.bridge.soap.http.SoapCredential;
 import br.ufsc.bridge.soap.http.SoapHttpRequest;
 import br.ufsc.bridge.soap.http.SoapHttpResponse;
+import br.ufsc.bridge.soap.string.StringMessageBuilder;
 import br.ufsc.bridge.soap.xpath.XPathFactoryAssist;
 
 public class MPIClient {
