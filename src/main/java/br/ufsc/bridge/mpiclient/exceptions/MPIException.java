@@ -1,6 +1,6 @@
 package br.ufsc.bridge.mpiclient.exceptions;
 
-public class MPIException extends Throwable {
+public class MPIException extends Exception {
 	public MPIException(String message) {
 		super(message);
 	}

@@ -15,6 +15,7 @@ public class XmlTextHandler extends DefaultAttributeHandler {
 		this.textConsumer = textConsumer;
 	}
 
+	@Override
 	public void characters(char[] ch, int start, int length) {
 		this.contents.write(ch, start, length);
 	}

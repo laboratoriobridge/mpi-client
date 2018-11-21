@@ -97,7 +97,7 @@ public class PRPA_IN201301UV02Test {
 				.vivo(false)
 				.build();
 
-		String messageXml = new PRPA_IN201301UV02().create(cidadao, DateTimeFormatter.ofPattern("yyyyMMddHHmmss").parse("20101123115812", LocalDateTime::from));
+		String messageXml = new PIXRequestMessage().create(cidadao, DateTimeFormatter.ofPattern("yyyyMMddHHmmss").parse("20101123115812", LocalDateTime::from));
 
 		assertThat(messageXml)
 				.isNotBlank()

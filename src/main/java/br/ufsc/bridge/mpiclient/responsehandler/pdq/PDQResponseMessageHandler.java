@@ -11,7 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import br.ufsc.bridge.mpiclient.model.Cidadao;
 
-public class PRPA_IN201306UV02Handler extends DefaultHandler {
+public class PDQResponseMessageHandler extends DefaultHandler {
 
 	@Getter
 	private List<Cidadao> cidadaos = new ArrayList<>();
@@ -19,7 +19,7 @@ public class PRPA_IN201306UV02Handler extends DefaultHandler {
 	private XMLReader reader;
 	private final PatientHandler patientHandler;
 
-	public PRPA_IN201306UV02Handler(XMLReader reader) {
+	public PDQResponseMessageHandler(XMLReader reader) {
 		this.reader = reader;
 		this.patientHandler = new PatientHandler();
 	}

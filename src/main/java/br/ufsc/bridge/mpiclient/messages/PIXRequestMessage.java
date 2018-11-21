@@ -11,7 +11,10 @@ import br.ufsc.bridge.mpiclient.thymeleaf.TemplateSerializer;
 import br.ufsc.bridge.mpiclient.validator.CidadaoValidator;
 import br.ufsc.bridge.platform.validation.form.errors.FormErrorImpl;
 
-public class PRPA_IN201301UV02 {
+/**
+ * PRPA_IN201301UV02
+ */
+public class PIXRequestMessage {
 
 	public String create(Cidadao cidadao, LocalDateTime requestTime) throws MPIValidationException {
 		FormErrorImpl error = new FormErrorImpl(cidadao);
