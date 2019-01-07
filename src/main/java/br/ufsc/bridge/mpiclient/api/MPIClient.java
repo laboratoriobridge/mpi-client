@@ -56,7 +56,7 @@ public class MPIClient {
 
 	public void inserir(Cidadao cidadao) throws MPIException {
 		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
-		String documentToString = this.sendSoap(this.options.getPixUrl(), "urn:hl7-org:v3:PIXRequestMessage", messageBody, "PIXResponseMessage");
+		String documentToString = this.sendSoap(this.options.getPixUrl(), "urn:hl7-org:v3:PRPA_IN201301UV02", messageBody, "MCCI_IN000002UV01");
 		PIXResponse response = new PIXResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 		if (response.getErrorMessage() != null) {
 			throw new MPIPixException(response.getErrorMessage());
@@ -65,7 +65,7 @@ public class MPIClient {
 
 	public List<Cidadao> consultar(PDQParameters parameters) throws MPIException {
 		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
-		String documentToString = this.sendSoap(this.options.getPdqUrl(), "urn:hl7-org:v3:PDQRequestMessage", messageBody, "PDQResponseMessage");
+		String documentToString = this.sendSoap(this.options.getPdqUrl(), "urn:hl7-org:v3:PRPA_IN201305UV02", messageBody, "PRPA_IN201306UV02");
 		return new PDQResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 	}
 

@@ -1,5 +1,5 @@
-<PRPA_IN201305UV02 xsi:schemaLocation="hl7-org:v3" ITSVersion="XML_1.0"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="hl7-org:v3">
+<PRPA_IN201305UV02 xsi:schemaLocation="urn:hl7-org:v3 ./schema/HL7V3/NE2008/multicacheschemas/PRPA_IN201305UV02.xsd" ITSVersion="XML_1.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
     <id root="2.16.840.1.113883.4.714" extension="123456"/>
     <creationTime th:value="${#temporals.format(requestTime, 'yyyyMMddHHmmss')}"/>
     <interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201305UV02"/>

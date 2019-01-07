@@ -8,6 +8,21 @@
     <artifactId>mpi-client</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>MPI Client</name>
+    <packaging>jar</packaging>
+
+    <description>Implementação de client para um servidor MPI (Master Patient Index) utilizando mensagens SOAP (PIX/PDQ) baseadas na especificação técnica para integração do
+        DATASUS.
+    </description>
+    <url>https://github.com/laboratoriobridge/mpi-client</url>
+
+    <developers>
+        <developer>
+            <name>Laboratório Bridge</name>
+            <email>maven@bridge.ufsc.br</email>
+            <organization>Laboratório Bridge</organization>
+            <organizationUrl>https://bridge.ufsc.br/</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +46,7 @@
         <dependency>
             <groupId>br.ufsc.bridge</groupId>
             <artifactId>validation</artifactId>
-            <version>1.3.8</version>
+            <version>1.4.1</version>
         </dependency>
         <dependency>
             <groupId>br.ufsc.bridge</groupId>
@@ -41,7 +56,7 @@
         <dependency>
             <groupId>br.ufsc.bridge</groupId>
             <artifactId>soap-api</artifactId>
-            <version>0.0.6</version>
+            <version>0.0.7</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -110,14 +125,87 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>deploy</goals>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <distributionManagement>
         <repository>
-            <id>repo-bridge</id>
-            <name>Internal Releases</name>
-            <url>https://repositorio.bridge.ufsc.br/repository/releases/</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
             <id>repo-bridge</id>
