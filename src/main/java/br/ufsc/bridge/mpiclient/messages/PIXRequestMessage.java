@@ -12,6 +12,7 @@ import br.ufsc.bridge.mpiclient.validator.CidadaoValidator;
 import br.ufsc.bridge.platform.validation.form.errors.FormErrorImpl;
 
 /**
+ * IHE transaction ITI-44 (Record added)
  * PRPA_IN201301UV02
  */
 public class PIXRequestMessage {

@@ -4,8 +4,14 @@ Implementação de client para um servidor MPI (Master Patient Index) utilizando
 
 ## Links
 
+- [Catálogo de serviços do DATASUS](http://datasus.saude.gov.br/interoperabilidade/catalogo-de-servicos)
 - [Especificação técnica do DATASUS](http://datasus.saude.gov.br/images/Interoperabilidade/Especificacao%20Tecnica%20para%20Integracao%20PIX-PDQ%20com%20o%20Cartao%20Nacional%20de%20Saude%20v5%2020.pdf)
 - [Projeto de exemplo SOAP UI](http://datasus.saude.gov.br/images/Interoperabilidade/IHE-MS.zip)
+
+## Operações suportadas
+
+- ITI-44 (PIXv3: add)
+- ITI-47 (PDQv3)
 
 ## Uso
 
@@ -36,3 +42,9 @@ PDQParameters parameters = PDQParameters.builder()
   .build();
 List<Cidadao> result = client.consultar(parameters);
 ```
+
+## Roadmap
+- Suporte às outras operações do ITI-44 (revise / merge) e ITI-45
+- Suporte aos perfis públicos do IHE
+- Suporte à outros value sets
+​

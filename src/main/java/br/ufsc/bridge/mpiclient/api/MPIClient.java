@@ -54,6 +54,12 @@ public class MPIClient {
 		this.options = options;
 	}
 
+	/**
+	 * IHE transaction ITI-44 (PIX Feed / Record added)
+	 *
+	 * @param cidadao Cidadão a ser transmitido.
+	 * @throws MPIException
+	 */
 	public void inserir(Cidadao cidadao) throws MPIException {
 		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
 		String documentToString = this.sendSoap(this.options.getPixUrl(), "urn:hl7-org:v3:PRPA_IN201301UV02", messageBody, "MCCI_IN000002UV01");
@@ -63,6 +69,13 @@ public class MPIClient {
 		}
 	}
 
+	/**
+	 * IHE transaction ITI-47 (PDQ)
+	 *
+	 * @param parameters parametros de filtro.
+	 * @return List<Cidadao> lista com os resultados da busca.
+	 * @throws MPIException
+	 */
 	public List<Cidadao> consultar(PDQParameters parameters) throws MPIException {
 		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
 		String documentToString = this.sendSoap(this.options.getPdqUrl(), "urn:hl7-org:v3:PRPA_IN201305UV02", messageBody, "PRPA_IN201306UV02");

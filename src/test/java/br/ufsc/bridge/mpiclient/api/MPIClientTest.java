@@ -5,27 +5,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+import org.junit.Test;
+
 import br.ufsc.bridge.mpiclient.exceptions.MPIException;
+import br.ufsc.bridge.mpiclient.exceptions.MPIValidationException;
 import br.ufsc.bridge.mpiclient.http.TrustAllSoapHttpClientFactory;
 import br.ufsc.bridge.mpiclient.model.Cidadao;
 import br.ufsc.bridge.soap.http.exception.SoapHttpConnectionException;
 import br.ufsc.bridge.soap.http.exception.SoapHttpResponseException;
 import br.ufsc.bridge.soap.http.exception.SoapInvalidHeaderException;
 
+@Slf4j
 public class MPIClientTest {
 
-	//	@Test
-	public void inserir() throws MPIException {
+	@Test(expected = MPIValidationException.class)
+	public void inserirInvalido() throws MPIException {
 		Cidadao cidadao = Cidadao.builder()
 				.build();
 
-		new MPIClient(MPIClientOptions.builder()
-				.pixUrl("https://servicoshm.saude.gov.br/cadsus/PIXManager")
-				.pdqUrl("https://servicoshm.saude.gov.br/cadsus/PDQSupplier")
-				.user("")
-				.password("")
-				.build())
-				.inserir(cidadao);
+		try {
+			new MPIClient(MPIClientOptions.builder()
+					.pixUrl("https://servicoshm.saude.gov.br/cadsus/PIXManager")
+					.pdqUrl("https://servicoshm.saude.gov.br/cadsus/PDQSupplier")
+					.user("")
+					.password("")
+					.build())
+					.inserir(cidadao);
+		} catch (MPIValidationException e) {
+			log.error(e.getErrors().toString());
+			throw e;
+		}
 
 	}
 
