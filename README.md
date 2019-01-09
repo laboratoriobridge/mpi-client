@@ -1,5 +1,8 @@
 # mpi-client
 
+[![Build Status](https://travis-ci.org/laboratoriobridge/mpi-client.svg?branch=master)](https://travis-ci.org/laboratoriobridge/mpi-client)
+[![codecov](https://codecov.io/gh/laboratoriobridge/mpi-client/branch/master/graph/badge.svg)](https://codecov.io/gh/laboratoriobridge/mpi-client)
+
 Implementação de client para um servidor MPI (Master Patient Index) utilizando mensagens SOAP (PIX/PDQ) baseadas na especificação técnica para integração do DATASUS.
 
 ## Links
