@@ -58,7 +58,7 @@ public class MPIClient {
 	 * IHE transaction ITI-44 (PIX Feed / Record added)
 	 *
 	 * @param cidadao Cidadão a ser transmitido.
-	 * @throws MPIException
+	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public void inserir(Cidadao cidadao) throws MPIException {
 		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
@@ -73,8 +73,8 @@ public class MPIClient {
 	 * IHE transaction ITI-47 (PDQ)
 	 *
 	 * @param parameters parametros de filtro.
-	 * @return List<Cidadao> lista com os resultados da busca.
-	 * @throws MPIException
+	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
+	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public List<Cidadao> consultar(PDQParameters parameters) throws MPIException {
 		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
