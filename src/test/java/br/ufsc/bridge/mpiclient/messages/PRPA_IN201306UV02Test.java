@@ -45,7 +45,7 @@ public class PRPA_IN201306UV02Test {
 				.hasFieldOrPropertyWithValue(meta.tipoConfidencialidade.getAlias(), TipoConfidencialidade.NORMAL);
 
 		assertThat(cidadao.getCnss())
-				.containsOnly(new CNS("898002940850595"));
+				.containsOnly(new CNS("898002940850595", "D"));
 
 		assertThat(cidadao.getEnderecos().get(0))
 				.hasFieldOrPropertyWithValue(MEndereco.meta.bairro.getAlias(), "CIDADE DE DEUS")

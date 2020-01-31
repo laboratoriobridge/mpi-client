@@ -54,8 +54,8 @@ public class PRPA_IN201301UV02Test {
 						LocalDate.of(2006, 06, 06),
 						TipoCertidaoNova.CERTIDAO_DE_NASCIMENTO))
 				.cnh(new CNH(LocalDate.of(2002, 02, 02), "789654987", UF.GOIAS))
-				.cns(new CNS("111111111111111"))
-				.cns(new CNS("888888888888888"))
+				.cns(new CNS("111111111111111", "D"))
+				.cns(new CNS("888888888888888", "D"))
 				.contato(new Contato("+55-61-82997451", TipoContato.TELEFONE_RESIDENCIAL))
 				.contato(new Contato("foo@gmail.com", TipoContato.EMAIL))
 				.contato(new Contato("bar@hotmail.com", TipoContato.EMAIL))
