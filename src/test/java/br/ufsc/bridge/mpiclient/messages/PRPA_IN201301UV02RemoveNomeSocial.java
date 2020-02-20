@@ -37,7 +37,7 @@ import br.ufsc.bridge.mpiclient.model.dominio.TipoEndereco;
 import br.ufsc.bridge.mpiclient.model.dominio.TipoLogradouro;
 import br.ufsc.bridge.mpiclient.model.dominio.UF;
 
-public class PRPA_IN201301UV02Test {
+public class PRPA_IN201301UV02RemoveNomeSocial {
 
 	@Test
 	public void pedroMoreiraLauro() throws MPIValidationException, IOException, SAXException {
@@ -80,7 +80,6 @@ public class PRPA_IN201301UV02Test {
 				.nome("PEDRO MOREIRA LAURO")
 				.nomeMae("MARIA DO CARMO MOREIRA LAURO")
 				.nomePai("PAULO PINTO RIBEIRO")
-				.nomeSocial("ORDEP")
 				.numeroDnv("DNVNUMBER1")
 				.passaporte(new Passaporte(
 						LocalDate.of(2001, 01, 01),
@@ -101,7 +100,6 @@ public class PRPA_IN201301UV02Test {
 
 		assertThat(messageXml)
 				.isNotBlank()
-				.isEqualTo(FileLoader.loadAsString("/requests/PedroMoreiraLauro.xml"));
+				.isEqualTo(FileLoader.loadAsString("/requests/DeleteNomeSocial.xml"));
 	}
-
 }
