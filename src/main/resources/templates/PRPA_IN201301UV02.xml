@@ -51,13 +51,13 @@
                             <deceasedInd th:value="${vivo} ? 'false' : 'true'"/>
                             <deceasedTime th:if="${dataObito != null}" th:value="${#temporals.format(dataObito, 'yyyyMMdd')}"/>
                             <addr use="H" th:each="endereco : ${enderecos}">
-                                <streetNameType th:utext="${endereco.tipoLogradouro.value}"/>
-                                <streetName th:utext="${endereco.logradouro}">[Nome do logradouro</streetName>
-                                <houseNumber th:utext="${endereco.numero}">[Número do logradouro, caso não exista preencher com S/N]</houseNumber>
+                                <streetNameType th:if="${endereco.tipoLogradouro != null}" th:utext="${endereco.tipoLogradouro.value}"/>
+                                <streetName th:if="${endereco.logradouro != null}" th:utext="${endereco.logradouro}">[Nome do logradouro</streetName>
+                                <houseNumber th:if="${endereco.numero != null}" th:utext="${endereco.numero}">[Número do logradouro, caso não exista preencher com S/N]</houseNumber>
                                 <unitID th:if="${endereco.complemento != null}" th:utext="${endereco.complemento}">[Complemento]</unitID>
-                                <additionalLocator th:utext="${endereco.bairro}">[Bairro]</additionalLocator>
+                                <additionalLocator th:if="${endereco.bairro != null}" th:utext="${endereco.bairro}">[Bairro]</additionalLocator>
                                 <city th:utext="${endereco.codigoMunicipio}">[Município]</city>
-                                <state th:utext="${endereco.uf.value}">[UF]</state>
+                                <state  th:if="${endereco.uf != null}" th:utext="${endereco.uf.value}">[UF]</state>
                                 <postalCode th:if="${endereco.cep != null}" th:utext="${endereco.cep}">[CEP]</postalCode>
                                 <country th:utext="${endereco.pais.value}">[Código do país]</country>
                             </addr>

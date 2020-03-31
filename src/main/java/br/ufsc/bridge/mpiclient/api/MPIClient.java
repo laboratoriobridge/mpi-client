@@ -87,6 +87,7 @@ public class MPIClient {
 		try {
 			StringMessageBuilder messageBuilder = new StringMessageBuilder(new SoapCredential(this.options.getUser(), this.options.getPassword()));
 			SoapHttpRequest request = new SoapHttpRequest(url, action, messageBuilder.createMessage(messageBody));
+			String req = new String(request.getBody());
 			request.addHeader("Accept-Encoding", "gzip,deflate");
 			SoapHttpResponse response = this.options.getClient().request(request);
 
