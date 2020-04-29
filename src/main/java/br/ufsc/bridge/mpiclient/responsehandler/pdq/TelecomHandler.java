@@ -20,6 +20,6 @@ public class TelecomHandler extends DefaultAttributeHandler<Cidadao> {
 	@Override
 	public void handle(@NonNull XMLReader reader, @NonNull ContentHandler parent, @NonNull Cidadao current, @NonNull Attributes attr) {
 		super.handle(reader, parent, current, attr);
-		current.getContatos().add(new Contato(attr.getValue("value"), TipoContato.getByValue(attr.getValue("use")),false));
+		current.getContatos().add(new Contato(attr.getValue("value"), TipoContato.getByValue(attr.getValue("use"))));
 	}
 }

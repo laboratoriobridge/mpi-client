@@ -42,10 +42,10 @@
                             <name th:if="${nome != null}" use="L">
                                 <given th:utext="${nome}">Nome</given>
                             </name>
-                            <name use="ASGN">
-                                <given th:utext="${nomeSocial!=null} ? ${nomeSocial} : null">Nome social</given>
+                            <name th:if="${nomeSocial != null}" use="ASGN">
+                                <given th:utext="${nomeSocial}">Nome social</given>
                             </name>
-                            <telecom th:each="contato : ${contatos}" th:attr="use=${contato.tipo.value}" th:value="${contato.removerContato ?  '[DEL]' + contato.value:contato.value}"/>
+                            <telecom th:each="contato : ${contatos}" th:attr="use=${contato.tipo.value}" th:value="${contato.value}"/>
                             <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" th:attr="code=${sexo.value}"/>
                             <birthTime th:if="${dataNascimento != null}" th:value="${#temporals.format(dataNascimento, 'yyyyMMdd')}"/>
                             <deceasedInd th:value="${vivo} ? 'false' : 'true'"/>

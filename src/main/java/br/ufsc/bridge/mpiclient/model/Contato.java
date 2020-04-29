@@ -16,5 +16,4 @@ import br.ufsc.bridge.mpiclient.model.dominio.TipoContato;
 public class Contato {
 	private String value;
 	private TipoContato tipo;
-	private Boolean removerContato;
 }
