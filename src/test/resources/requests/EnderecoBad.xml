@@ -49,16 +49,7 @@
                             <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
                             <birthTime value="19850205"/>
                             <deceasedInd value="true"/>
-                            <addr use="H">
-                                <streetNameType>081</streetNameType>
-                                <streetName>Logradouro</streetName>
-                                <houseNumber>12</houseNumber>
-                                <unitID>Complemento</unitID>
-                                <additionalLocator>Bairro</additionalLocator>
-                                <city>123456</city>
-                                <state>DF</state>
-                                <postalCode>88888080</postalCode>
-                                <country>010</country>
+                            <addr use="BAD">
                             </addr>
                             <raceCode code="01"/>
                             <ethnicGroupCode code="0202"/>

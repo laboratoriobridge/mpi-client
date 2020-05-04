@@ -1,5 +1,7 @@
 package br.ufsc.bridge.mpiclient.model.dominio;
 
+import java.util.Arrays;
+
 public enum Etnia {
 	ACONA_WAKONAS_NACONAS_JAKONA_ACORA_NES("0001", "ACONA_WAKONAS_NACONAS_JAKONA_ACORA_NES"),
 	AHANENAWA("X265", "AHANENAWA"),
@@ -417,5 +419,12 @@ public enum Etnia {
 
 	public String getValue() {
 		return this.value;
+	}
+
+	public static Etnia getByValue(String value) {
+		return Arrays.stream(values())
+				.filter(item -> item.getValue().equals(value))
+				.findFirst()
+				.orElse(null);
 	}
 }

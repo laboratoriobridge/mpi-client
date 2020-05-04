@@ -1,4 +1,4 @@
-<PRPA_IN201301UV02 ITSVersion="XML_1.0" xmlns="hl7-org:v3">
+<PRPA_IN201301UV02 ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3">
     <id extension="6e88df42-70ac-4db6-a4ba-449c7fbf2a4e" root="2.16.840.1.113883.3.72.6.1"/>
     <creationTime th:value="${#temporals.format(requestTime, 'yyyyMMddHHmmss')}"/>
     <interactionId extension="PRPA_IN201301UV02" root="2.16.840.1.113883.1.6"/>
@@ -50,14 +50,16 @@
                             <birthTime th:if="${dataNascimento != null}" th:value="${#temporals.format(dataNascimento, 'yyyyMMdd')}"/>
                             <deceasedInd th:value="${vivo} ? 'false' : 'true'"/>
                             <deceasedTime th:if="${dataObito != null}" th:value="${#temporals.format(dataObito, 'yyyyMMdd')}"/>
-                            <addr use="H" th:each="endereco : ${enderecos}">
-                                <streetNameType th:utext="${endereco.tipoLogradouro.value}"/>
-                                <streetName th:utext="${endereco.logradouro}">[Nome do logradouro</streetName>
-                                <houseNumber th:utext="${endereco.numero}">[Número do logradouro, caso não exista preencher com S/N]</houseNumber>
+                            <addr use="BAD" th:if="${enderecos==null || enderecos.isEmpty()}">
+                            </addr>
+                            <addr use="H" th:if="${enderecos !=null && !enderecos.isEmpty()}" th:each="endereco : ${enderecos}">
+                                <streetNameType th:if="${endereco.tipoLogradouro != null}" th:utext="${endereco.tipoLogradouro.value}"/>
+                                <streetName th:if="${endereco.logradouro != null}" th:utext="${endereco.logradouro}">[Nome do logradouro</streetName>
+                                <houseNumber th:if="${endereco.numero != null}" th:utext="${endereco.numero}">[Número do logradouro, caso não exista preencher com S/N]</houseNumber>
                                 <unitID th:if="${endereco.complemento != null}" th:utext="${endereco.complemento}">[Complemento]</unitID>
-                                <additionalLocator th:utext="${endereco.bairro}">[Bairro]</additionalLocator>
+                                <additionalLocator th:if="${endereco.bairro != null}" th:utext="${endereco.bairro}">[Bairro]</additionalLocator>
                                 <city th:utext="${endereco.codigoMunicipio}">[Município]</city>
-                                <state th:utext="${endereco.uf.value}">[UF]</state>
+                                <state  th:if="${endereco.uf != null}" th:utext="${endereco.uf.value}">[UF]</state>
                                 <postalCode th:if="${endereco.cep != null}" th:utext="${endereco.cep}">[CEP]</postalCode>
                                 <country th:utext="${endereco.pais.value}">[Código do país]</country>
                             </addr>
@@ -218,6 +220,7 @@
                         </providerOrganization>
                     </patient>
                 </subject1>
+                <custodian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" />
             </registrationEvent>
         </subject>
     </controlActProcess>

@@ -22,7 +22,6 @@ public class PIXResponseMessage {
 	public PIXResponse read(InputStream xmlStream) throws MPIXmlParseException {
 		try {
 			XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-			xmlReader.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 			xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 			PIXResponseMessageHandler handler = new PIXResponseMessageHandler(xmlReader);
 			xmlReader.setContentHandler(handler);
