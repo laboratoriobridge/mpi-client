@@ -172,15 +172,18 @@
                                 </scopingOrganization>
                             </asOtherIDs>
                             <asOtherIDs classCode="ROL" th:if="${!nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Brasileiro}">
+
                                 <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.numeroPortaria != null}"
                                     th:attr="extension=${nacionalidade.numeroPortaria}" root="2.16.840.1.113883.4.713"/>
-                                <id th:attr="extension=${#temporals.format(nacionalidade.dataEntradaBrasil, 'yyyyMMdd')}" root="2.16.840.1.113883.4.713.1"/>
+
+                                <id th:if="${nacionalidade.dataEntradaBrasil != null}"
+                                        th:attr="extension=${#temporals.format(nacionalidade.dataEntradaBrasil, 'yyyyMMdd')}" root="2.16.840.1.113883.4.713.1"/>
                                 <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.dataNaturalizacao != null}"
                                     th:attr="extension=${#temporals.format(nacionalidade.dataNaturalizacao, 'yyyyMMdd')}" root="2.16.840.1.113883.4.713.2"/>
                                 <scopingOrganization classCode="ORG" determinerCode="INSTANCE">
                                     <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.numeroPortaria != null}"
                                         root="2.16.840.1.113883.4.713"/>
-                                    <id root="2.16.840.1.113883.4.713.1"/>
+                                    <id th:if="${nacionalidade.dataEntradaBrasil != null}" root="2.16.840.1.113883.4.713.1"/>
                                     <id th:if="${nacionalidade instanceof br.ufsc.bridge.mpiclient.model.Naturalizado && nacionalidade.dataNaturalizacao != null}"
                                         root="2.16.840.1.113883.4.713.2"/>
                                 </scopingOrganization>
