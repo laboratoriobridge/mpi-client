@@ -18,6 +18,7 @@ public class PatientPersonHandler extends DefaultAttributeHandler<Cidadao> {
 		this.handlers.add(new PersonalRelationshipHandler());
 		this.handlers.add(new AddressHandler());
 		this.handlers.add(new RacaCorHandler());
+		this.handlers.add(new EtniaHandler());
 		this.handlers.add(new OtherIdsHandler());
 		this.handlers.add(new BirthPlaceHandler());
 	}
