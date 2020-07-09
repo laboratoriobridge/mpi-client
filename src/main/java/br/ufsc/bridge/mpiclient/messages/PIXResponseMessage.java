@@ -3,8 +3,6 @@ package br.ufsc.bridge.mpiclient.messages;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.XMLConstants;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
