@@ -25,9 +25,9 @@ public class BirthPlaceHandler extends DefaultAttributeHandler<Cidadao> {
 			if(nacionalidade instanceof Naturalizado && !Pais.BRASIL.getValue().equals(codigoPais)){
 				this.current.setNacionalidade(new Estrangeiro(((Naturalizado)this.current.getNacionalidade()).getDataEntradaBrasil(),
 						Pais.getByValue(codigoPais)));
-			}else if (nacionalidade instanceof Estrangeiro) {
+			} else if (nacionalidade instanceof Estrangeiro && !Pais.BRASIL.getValue().equals(codigoPais)) {
 				((Estrangeiro) nacionalidade).setPaisNascimento(Pais.getByValue(codigoPais));
-			}else if (this.current.getNacionalidade()==null ){
+			} else if(nacionalidade == null || (nacionalidade instanceof Estrangeiro && Pais.BRASIL.getValue().equals(codigoPais))){
 				this.current.setNacionalidade(new Brasileiro(this.codMunicipio));
 			}
 		}));
