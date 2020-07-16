@@ -17,7 +17,6 @@ public class BirthPlaceHandler extends DefaultAttributeHandler<Cidadao> {
 		super("birthPlace");
 		this.handlers.add(new XmlTextHandler("city", codigoMunicipio ->{
 				this.codMunicipio = codigoMunicipio;
-				//				this.current.setNacionalidade(new Brasileiro(codigoMunicipio))
 		}));
 
 		this.handlers.add(new XmlTextHandler("country", codigoPais -> {
