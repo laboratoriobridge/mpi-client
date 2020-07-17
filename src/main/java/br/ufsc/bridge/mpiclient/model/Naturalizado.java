@@ -16,8 +16,18 @@ import br.ufsc.bridge.mpiclient.model.dominio.Pais;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Naturalizado implements Nacionalidade {
+
 	private LocalDate dataEntradaBrasil;
+
 	private LocalDate dataNaturalizacao;
+
 	private String numeroPortaria;
-	private final Pais paisNascimento = Pais.BRASIL;
+
+	private Pais paisNascimento = Pais.BRASIL;
+
+	public Naturalizado(LocalDate dataEntradaBrasil,LocalDate dataNaturalizacao,String numeroPortaria){
+			this.dataEntradaBrasil = dataEntradaBrasil;
+			this.dataNaturalizacao = dataNaturalizacao;
+			this.numeroPortaria = numeroPortaria;
+	}
 }
