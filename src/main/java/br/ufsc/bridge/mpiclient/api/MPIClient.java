@@ -34,11 +34,11 @@ import br.ufsc.bridge.soap.xpath.XPathFactoryAssist;
 
 public class MPIClient {
 
-	private static BlockingQueue<Transformer> transformerPool = new LinkedBlockingQueue<>(5);
+	private static BlockingQueue<Transformer> transformerPool = new LinkedBlockingQueue<>(20);
 
 	static {
 		TransformerFactory factory = TransformerFactory.newInstance();
-		int poolSize = 5;
+		int poolSize = 20;
 		try {
 			for (int i = 0; i < poolSize; i++) {
 				transformerPool.add(factory.newTransformer());
