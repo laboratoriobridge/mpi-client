@@ -15,6 +15,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.Charsets;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 
 import br.ufsc.bridge.mpiclient.exceptions.MPIException;
@@ -54,15 +55,13 @@ public class MPIClient {
 		this.options = options;
 	}
 
-	/**
-	 * IHE transaction ITI-44 (PIX Feed / Record added)
-	 *
-	 * @param cidadao Cidadão a ser transmitido.
-	 * @throws MPIException erros enviados pelo servidor do MPI
-	 */
-	public void inserir(Cidadao cidadao) throws MPIException {
+	public void inserir(Cidadao cidadao, String token) throws MPIException {
 		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
-		String documentToString = this.sendSoap(this.options.getPixUrl(), "urn:hl7-org:v3:PRPA_IN201301UV02", messageBody, "MCCI_IN000002UV01");
+		String documentToString = this.sendSoap(StringUtils.isNotEmpty(token) ? this.options.getPixUrlJwt() : this.options.getPixUrl(),
+				"urn:hl7-org:v3:PRPA_IN201301UV02",
+				messageBody,
+				"MCCI_IN000002UV01",
+				token);
 		PIXResponse response = new PIXResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 		if (response.getErrorMessage() != null) {
 			throw new MPIPixException(response.getErrorMessage());
@@ -70,23 +69,58 @@ public class MPIClient {
 	}
 
 	/**
+	 * IHE transaction ITI-44 (PIX Feed / Record added)
+	 *
+	 * @param cidadao Cidadão a ser transmitido.
+	 * @throws MPIException erros enviados pelo servidor do MPI
+	 */
+	public void inserir(Cidadao cidadao) throws MPIException {
+		this.inserir(cidadao, null);
+	}
+
+	/**
 	 * IHE transaction ITI-47 (PDQ)
 	 *
 	 * @param parameters parametros de filtro.
+	 * @param parameters token de autenticação.                     .
+	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
+	 * @throws MPIException erros enviados pelo servidor do MPI
+	 */
+	public List<Cidadao> consultar(PDQParameters parameters, String token) throws MPIException {
+		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
+		String documentToString = this.sendSoap(StringUtils.isNotEmpty(token) ? this.options.getPdqUrlJwt() : this.options.getPdqUrl(),
+				"urn:hl7-org:v3:PRPA_IN201305UV02",
+				messageBody,
+				"PRPA_IN201306UV02",
+				token);
+		return new PDQResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
+	}
+
+	/**
+	 * IHE transaction ITI-47 (PDQ)
+	 *
+	 * @param parameters parametros de filtro.
+	 * @param parameters token de autenticação.
 	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public List<Cidadao> consultar(PDQParameters parameters) throws MPIException {
-		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
-		String documentToString = this.sendSoap(this.options.getPdqUrl(), "urn:hl7-org:v3:PRPA_IN201305UV02", messageBody, "PRPA_IN201306UV02");
-		return new PDQResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
+		return this.consultar(parameters, null);
 	}
 
-	private String sendSoap(String url, String action, String messageBody, String bodyContentTag)
+	private String sendSoap(String url, String action, String messageBody, String bodyContentTag, String token)
 			throws MPISoapException {
 		try {
-			StringMessageBuilder messageBuilder = new StringMessageBuilder(new SoapCredential(this.options.getUser(), this.options.getPassword()));
+			Boolean hasToken = StringUtils.isNotEmpty(token);
+			StringMessageBuilder messageBuilder = hasToken ?
+					new StringMessageBuilder(null) :
+					new StringMessageBuilder(new SoapCredential(this.options.getUser(), this.options.getPassword()));
+
 			SoapHttpRequest request = new SoapHttpRequest(url, action, messageBuilder.createMessage(messageBody));
+
+			if (hasToken) {
+				request.addHeader("Authorization", "jwt " + token);
+			}
 			request.addHeader("Accept-Encoding", "gzip,deflate");
 			SoapHttpResponse response = this.options.getClient().request(request);
 
