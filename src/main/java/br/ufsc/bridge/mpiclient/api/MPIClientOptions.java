@@ -16,6 +16,10 @@ public class MPIClientOptions {
 	@NonNull
 	private String pdqUrl;
 	@NonNull
+	private String pixUrlJwt;
+	@NonNull
+	private String pdqUrlJwt;
+	@NonNull
 	private String user;
 	@NonNull
 	private String password;
