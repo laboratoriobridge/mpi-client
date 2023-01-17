@@ -55,17 +55,23 @@ public class MPIClient {
 		this.options = options;
 	}
 
-	public void inserir(Cidadao cidadao, String token) throws MPIException {
+	public void inserir(Cidadao cidadao, String osbToken, String accessToken) throws MPIException {
 		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
-		String documentToString = this.sendSoap(StringUtils.isNotEmpty(token) ? this.options.getPixUrlJwt() : this.options.getPixUrl(),
+		String url = StringUtils.isNotEmpty(accessToken) ? this.options.getPixUrlJwtGovBr() : StringUtils.isNotEmpty(osbToken) ? this.options.getPixUrlJwt() : this.options.getPixUrl();
+		String documentToString = this.sendSoap(url,
 				"urn:hl7-org:v3:PRPA_IN201301UV02",
 				messageBody,
 				"MCCI_IN000002UV01",
-				token);
+				osbToken, 
+				accessToken);
 		PIXResponse response = new PIXResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 		if (response.getErrorMessage() != null) {
 			throw new MPIPixException(response.getErrorMessage());
 		}
+	}
+
+	public void inserir(Cidadao cidadao, String osbToken) throws MPIException {
+		this.inserir(cidadao, osbToken, null);
 	}
 
 	/**
@@ -82,17 +88,20 @@ public class MPIClient {
 	 * IHE transaction ITI-47 (PDQ)
 	 *
 	 * @param parameters parametros de filtro.
-	 * @param parameters token de autenticação.                     .
+	 * @param parameters token de autenticação.
+	 * @param parameters token de acesso.                     .
 	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
-	public List<Cidadao> consultar(PDQParameters parameters, String token) throws MPIException {
+	public List<Cidadao> consultar(PDQParameters parameters, String osbToken, String accessToken) throws MPIException {
 		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
-		String documentToString = this.sendSoap(StringUtils.isNotEmpty(token) ? this.options.getPdqUrlJwt() : this.options.getPdqUrl(),
+		String url = StringUtils.isNotEmpty(accessToken) ? this.options.getPdqUrlJwtGovBr() : StringUtils.isNotEmpty(osbToken) ? this.options.getPdqUrlJwt() : this.options.getPdqUrl();
+		String documentToString = this.sendSoap(url,
 				"urn:hl7-org:v3:PRPA_IN201305UV02",
 				messageBody,
 				"PRPA_IN201306UV02",
-				token);
+				osbToken,
+				accessToken);
 		return new PDQResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 	}
 
@@ -101,6 +110,20 @@ public class MPIClient {
 	 *
 	 * @param parameters parametros de filtro.
 	 * @param parameters token de autenticação.
+	 * @param parameters token de acesso.
+	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
+	 * @throws MPIException erros enviados pelo servidor do MPI
+	 */
+	public List<Cidadao> consultar(PDQParameters parameters, String osbToken) throws MPIException {
+		return this.consultar(parameters, osbToken, null);
+	}
+
+	/**
+	 * IHE transaction ITI-47 (PDQ)
+	 *
+	 * @param parameters parametros de filtro.
+	 * @param parameters token de autenticação.
+	 * @param parameters token de acesso.
 	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
@@ -108,19 +131,24 @@ public class MPIClient {
 		return this.consultar(parameters, null);
 	}
 
-	private String sendSoap(String url, String action, String messageBody, String bodyContentTag, String token)
+	private String sendSoap(String url, String action, String messageBody, String bodyContentTag, String osbToken, String accessToken)
 			throws MPISoapException {
 		try {
-			Boolean hasToken = StringUtils.isNotEmpty(token);
-			StringMessageBuilder messageBuilder = hasToken ?
+			Boolean hasOsbToken = StringUtils.isNotEmpty(osbToken);
+			Boolean hasAccessToken = StringUtils.isNotEmpty(accessToken);
+			StringMessageBuilder messageBuilder = hasOsbToken ?
 					new StringMessageBuilder(null) :
 					new StringMessageBuilder(new SoapCredential(this.options.getUser(), this.options.getPassword()));
 
 			SoapHttpRequest request = new SoapHttpRequest(url, action, messageBuilder.createMessage(messageBody));
 
-			if (hasToken) {
-				request.addHeader("Authorization", "jwt " + token);
+			if (hasOsbToken) {
+				request.addHeader("Authorization", "jwt " + osbToken);
+				if(hasAccessToken){
+					request.addHeader("X-Authorization-GovBr", accessToken);
+				}
 			}
+			
 			request.addHeader("Accept-Encoding", "gzip,deflate");
 			SoapHttpResponse response = this.options.getClient().request(request);
 
