@@ -56,22 +56,11 @@ public class MPIClient {
 	}
 
 	public void inserir(Cidadao cidadao, String osbToken, String accessToken) throws MPIException {
-		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
-		String url = StringUtils.isNotEmpty(accessToken) ? this.options.getPixUrlJwtGovBr() : StringUtils.isNotEmpty(osbToken) ? this.options.getPixUrlJwt() : this.options.getPixUrl();
-		String documentToString = this.sendSoap(url,
-				"urn:hl7-org:v3:PRPA_IN201301UV02",
-				messageBody,
-				"MCCI_IN000002UV01",
-				osbToken, 
-				accessToken);
-		PIXResponse response = new PIXResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
-		if (response.getErrorMessage() != null) {
-			throw new MPIPixException(response.getErrorMessage());
-		}
+		this.doInserir(cidadao, osbToken, accessToken, this.options.getPixUrlJwtGovBr());
 	}
 
 	public void inserir(Cidadao cidadao, String osbToken) throws MPIException {
-		this.inserir(cidadao, osbToken, null);
+		this.doInserir(cidadao, osbToken, null, this.options.getPixUrlJwt());
 	}
 
 	/**
@@ -81,9 +70,22 @@ public class MPIClient {
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public void inserir(Cidadao cidadao) throws MPIException {
-		this.inserir(cidadao, null);
+		this.doInserir(cidadao, null, null, this.options.getPixUrl());
 	}
 
+	public void doInserir(Cidadao cidadao, String osbToken, String accessToken, String url) throws MPIException {
+		String messageBody = new PIXRequestMessage().create(cidadao, LocalDateTime.now());
+		String documentToString = this.sendSoap(url,
+				"urn:hl7-org:v3:PRPA_IN201301UV02",
+				messageBody,
+				"MCCI_IN000002UV01",
+				osbToken, 
+				accessToken);
+		PIXResponse response = new PIXResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
+		if (response.getErrorMessage() != null) {
+			throw new MPIPixException(response.getErrorMessage());
+		}	
+	}
 	/**
 	 * IHE transaction ITI-47 (PDQ)
 	 *
@@ -94,15 +96,7 @@ public class MPIClient {
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public List<Cidadao> consultar(PDQParameters parameters, String osbToken, String accessToken) throws MPIException {
-		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
-		String url = StringUtils.isNotEmpty(accessToken) ? this.options.getPdqUrlJwtGovBr() : StringUtils.isNotEmpty(osbToken) ? this.options.getPdqUrlJwt() : this.options.getPdqUrl();
-		String documentToString = this.sendSoap(url,
-				"urn:hl7-org:v3:PRPA_IN201305UV02",
-				messageBody,
-				"PRPA_IN201306UV02",
-				osbToken,
-				accessToken);
-		return new PDQResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
+		return this.doConsultar(parameters, osbToken, accessToken, this.options.getPdqUrlJwtGovBr());	
 	}
 
 	/**
@@ -115,7 +109,7 @@ public class MPIClient {
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public List<Cidadao> consultar(PDQParameters parameters, String osbToken) throws MPIException {
-		return this.consultar(parameters, osbToken, null);
+		return this.doConsultar(parameters, osbToken, null, this.options.getPdqUrlJwt());
 	}
 
 	/**
@@ -128,7 +122,18 @@ public class MPIClient {
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public List<Cidadao> consultar(PDQParameters parameters) throws MPIException {
-		return this.consultar(parameters, null);
+		return this.doConsultar(parameters, null, null, this.options.getPdqUrl());
+	}
+
+	public List<Cidadao> doConsultar(PDQParameters parameters, String osbToken, String accessToken, String url) throws MPIException {
+		String messageBody = new PDQRequestMessage().create(parameters, LocalDateTime.now());
+		String documentToString = this.sendSoap(url,
+				"urn:hl7-org:v3:PRPA_IN201305UV02",
+				messageBody,
+				"PRPA_IN201306UV02",
+				osbToken,
+				accessToken);
+		return new PDQResponseMessage().read(new ByteArrayInputStream(documentToString.getBytes(Charsets.UTF_8)));
 	}
 
 	private String sendSoap(String url, String action, String messageBody, String bodyContentTag, String osbToken, String accessToken)
