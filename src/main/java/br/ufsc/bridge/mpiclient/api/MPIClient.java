@@ -55,12 +55,16 @@ public class MPIClient {
 		this.options = options;
 	}
 
+	/**
+	 * IHE transaction ITI-44 (PIX Feed / Record added)
+	 *
+	 * @param cidadao Cidadão a ser transmitido.
+	 * @param osbToken Token obtido no servidor de autenticação usando certificado digital
+	 * @param accessToken Token obtido na autenticação com o GovBr
+	 * @throws MPIException erros enviados pelo servidor do MPI
+	 */
 	public void inserir(Cidadao cidadao, String osbToken, String accessToken) throws MPIException {
 		this.doInserir(cidadao, osbToken, accessToken, this.options.getPixUrlJwtGovBr());
-	}
-
-	public void inserir(Cidadao cidadao, String osbToken) throws MPIException {
-		this.doInserir(cidadao, osbToken, null, this.options.getPixUrlJwt());
 	}
 
 	/**
@@ -90,26 +94,13 @@ public class MPIClient {
 	 * IHE transaction ITI-47 (PDQ)
 	 *
 	 * @param parameters parametros de filtro.
-	 * @param parameters token de autenticação.
-	 * @param parameters token de acesso.                     .
+	 * @param osbToken Token obtido no servidor de autenticação usando certificado digital
+	 * @param accessToken Token obtido na autenticação com o GovBr               .
 	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
 	 * @throws MPIException erros enviados pelo servidor do MPI
 	 */
 	public List<Cidadao> consultar(PDQParameters parameters, String osbToken, String accessToken) throws MPIException {
 		return this.doConsultar(parameters, osbToken, accessToken, this.options.getPdqUrlJwtGovBr());	
-	}
-
-	/**
-	 * IHE transaction ITI-47 (PDQ)
-	 *
-	 * @param parameters parametros de filtro.
-	 * @param parameters token de autenticação.
-	 * @param parameters token de acesso.
-	 * @return {@literal List<Cidadao>} lista com os resultados da busca.
-	 * @throws MPIException erros enviados pelo servidor do MPI
-	 */
-	public List<Cidadao> consultar(PDQParameters parameters, String osbToken) throws MPIException {
-		return this.doConsultar(parameters, osbToken, null, this.options.getPdqUrlJwt());
 	}
 
 	/**
