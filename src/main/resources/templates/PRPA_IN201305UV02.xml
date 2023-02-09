@@ -56,13 +56,16 @@
                     <semanticsText>LivingSubject.Given</semanticsText>
                 </livingSubjectName>
                 <mothersMaidenName th:if="${nomeMae != null}">
-                    <value use="L" th:utext="${nomeMae}">Nome da mãe</value>
+                    <value use="L">
+                        <family th:utext="${nomeMae}">Nome da mãe </family>
+                    </value>
                     <semanticsText>mothersMaidenName</semanticsText>
                 </mothersMaidenName>
                 <patientAddress th:if="${codigoMunicipioNascimento != null}">
-                    <addr>
+                    <value use="BIRTHPL">
                         <city th:utext="${codigoMunicipioNascimento}">Município nascimento</city>
-                    </addr>
+                    </value>
+                    <semanticsText>LivingSubject.birthPlaceAddress</semanticsText>
                 </patientAddress>
             </parameterList>
         </queryByParameter>

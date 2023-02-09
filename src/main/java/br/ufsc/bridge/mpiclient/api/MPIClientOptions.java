@@ -16,9 +16,9 @@ public class MPIClientOptions {
 	@NonNull
 	private String pdqUrl;
 	@NonNull
-	private String pixUrlJwt;
+	private String pixUrlJwtGovBr;
 	@NonNull
-	private String pdqUrlJwt;
+	private String pdqUrlJwtGovBr;
 	@NonNull
 	private String user;
 	@NonNull
