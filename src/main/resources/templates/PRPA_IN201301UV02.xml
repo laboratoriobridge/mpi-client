@@ -50,9 +50,9 @@
                             <birthTime th:if="${dataNascimento != null}" th:value="${#temporals.format(dataNascimento, 'yyyyMMdd')}"/>
                             <deceasedInd th:value="${vivo} ? 'false' : 'true'"/>
                             <deceasedTime th:if="${dataObito != null}" th:value="${#temporals.format(dataObito, 'yyyyMMdd')}"/>
-                            <addr use="BAD" th:if="${enderecos==null || enderecos.isEmpty()}">
+                            <addr use="BAD" th:if="${enderecos==null || #lists.isEmpty(enderecos)}">
                             </addr>
-                            <addr use="H" th:if="${enderecos !=null && !enderecos.isEmpty()}" th:each="endereco : ${enderecos}">
+                            <addr use="H" th:if="${enderecos !=null && !#lists.isEmpty(enderecos)}" th:each="endereco : ${enderecos}">
                                 <streetNameType th:if="${endereco.tipoLogradouro != null}" th:utext="${endereco.tipoLogradouro.value}"/>
                                 <streetName th:if="${endereco.logradouro != null}" th:utext="${endereco.logradouro}">[Nome do logradouro</streetName>
                                 <houseNumber th:if="${endereco.numero != null}" th:utext="${endereco.numero}">[Número do logradouro, caso não exista preencher com S/N]</houseNumber>
