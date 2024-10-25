@@ -1,7 +1,6 @@
 # mpi-client
 
 ![Build Status](https://github.com/laboratoriobridge/mpi-client/actions/workflows/maven.yml/badge.svg)
-[![codecov](https://codecov.io/gh/laboratoriobridge/mpi-client/branch/master/graph/badge.svg)](https://codecov.io/gh/laboratoriobridge/mpi-client)
 
 Implementação de client para um servidor MPI (Master Patient Index) utilizando mensagens SOAP (PIX/PDQ) baseadas na especificação técnica para integração do DATASUS.
 

@@ -2,9 +2,11 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: master
+    branches:
+      - main
   pull_request:
-    branches: '*'
+    branches:
+      - '*'
 
 jobs:
   build:
@@ -28,6 +30,3 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean verify
-
-    - name: Upload codecov report
-      uses: codecov/codecov-action@v1.5.2
