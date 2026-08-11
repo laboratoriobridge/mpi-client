@@ -4,7 +4,7 @@
 
     <groupId>br.ufsc.bridge</groupId>
     <artifactId>mpi-client</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
     <name>MPI Client</name>
     <packaging>jar</packaging>
 
