@@ -5,7 +5,8 @@ import java.util.Arrays;
 public enum Sexo {
 	MASCULINO("M"),
 	FEMININO("F"),
-	IGNORADO("I");
+	IGNORADO("I"),
+	INDETERMINADO("N");
 
 	private String value;
 
